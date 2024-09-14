@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Event } from "../types/event";
-import EventActions from "./EvntActions";
+import EventActions from "./EventActions";
 import Modal from "./ui/Modal";
 import EventForm from "./EventForm";
 interface PropsType {
