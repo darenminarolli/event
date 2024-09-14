@@ -1,0 +1,24 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+}
+html{
+  scroll-behavior: smooth;
+}
+
+body{
+  @apply bg-bg text-text font-base
+}
+
+.header-text {
+  @apply text-4xl font-bold text-center underline underline-offset-4 decoration-4 decoration-main py-10
+}
+
+.secondary-text {
+  @apply text-2xl font-medium py-2 underline decoration-4 decoration-main
+}
+.border-effect {
+  @apply rounded-base border-2 border-secondaryBlack bg-main px-4 py-2 text-sm font-base shadow-dark
+}
