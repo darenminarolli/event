@@ -1,60 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import EventCard from "../components/EventCard";
 import Button from "../components/ui/Button";
 import Modal from "../components/ui/Modal";
 import EventForm from "../components/EventForm";
-import { Event } from "../types/event";
-import { EventService } from "../services/EventService";
 import { useAuth } from "../hooks/useAuth";
+import { useEventContext } from "../contexts/EventContext";
 
 const EventsPage = () => {
   const { isAuthenticated } = useAuth();
+  const { events, isLoading } = useEventContext();
 
-  const [events, setEvents] = useState<Event[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [eventStatuses, setEventStatuses] = useState<{
-    [key: string]: "reserve" | "reserved" | "owner";
-  }>({});
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await EventService.getAllEvents();
-        setEvents(response);
 
-        const statuses = response.reduce(
-          (
-            acc: { [key: string]: "reserve" | "reserved" | "owner" },
-            event: Event
-          ) => {
-            if (event._id) {
-              acc[event._id] = "reserve";
-            }
-            return acc;
-          },
-          {}
-        );
-        setEventStatuses(statuses);
-      } catch (error) {
-        console.error("Failed to fetch events:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchEvents();
-  }, []);
-
-  const handleStatusChange = (
-    eventId: string,
-    newStatus: "reserve" | "reserved" | "owner"
-  ) => {
-    setEventStatuses((prevStatuses) => ({
-      ...prevStatuses,
-      [eventId]: newStatus,
-    }));
-  };
 
   const handleEventCreation = () => {
     if (!isAuthenticated) {
@@ -88,9 +46,8 @@ const EventsPage = () => {
             return (
               <EventCard
                 key={event._id}
-                status={eventStatuses[event._id] || "reserve"}
+                status={"reserve"}
                 event={event}
-                onStatusChange={handleStatusChange}
               />
             );
           })}

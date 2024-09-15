@@ -4,10 +4,13 @@ import TextArea from "./ui/TextArea";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { EventService } from "../services/EventService";
 import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useEventContext } from "../contexts/EventContext";
 import { Event } from "../types/event";
+
+interface PropsType {
+  event?: Event;
+}
 
 const schema = z.object({
   name: z.string().trim().min(3).max(100),
@@ -17,9 +20,10 @@ const schema = z.object({
 });
 type FormFields = z.infer<typeof schema>;
 
-const EventForm = ({ event }: { event?: Event }) => {
+const EventForm: React.FC<PropsType> = ({ event }) => {
+
   const { user } = useAuth();
-  const navigate = useNavigate();
+  const { handleCreateEvent, handleUpdateEvent } = useEventContext();
   const {
     register,
     handleSubmit,
@@ -39,15 +43,11 @@ const EventForm = ({ event }: { event?: Event }) => {
     try {
       const dataTosend = { ...data, organizer: user?._id };
       console.log("send", dataTosend);
-      let res;
-      if (event) {
-        res = await EventService.updateEvent(dataTosend, event._id);
+
+      if (event && event._id) {
+        handleUpdateEvent(dataTosend, event._id);
       } else {
-        res = await EventService.createEvent(dataTosend);
-      }
-      if (res) {
-        console.log("Event created successfully:", res);
-        navigate('/profile');
+        handleCreateEvent(dataTosend);
       }
     } catch (error) {
       setError("root", {
@@ -97,7 +97,7 @@ const EventForm = ({ event }: { event?: Event }) => {
         onClick={() => {}}
         type="submit"
       >
-       {event? 'Update': 'Create' } Event
+        {event ? "Update" : "Create"} Event
       </Button>
     </form>
   );

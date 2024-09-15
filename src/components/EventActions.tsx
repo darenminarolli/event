@@ -50,7 +50,7 @@ const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen, onStatus
     }
   };
 
-  const handleDelete = async (eventId?: string) => {
+  const handleDeleteEvent = async (eventId?: string) => {
     try {
       const event = await EventService.deleteEvent(eventId);
       console.log("Event deleted successfully:", event);
@@ -78,7 +78,7 @@ const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen, onStatus
           </Button>
           <Button
             className="bg-red-600"
-            onClick={() => handleDelete(event._id)}
+            onClick={() => handleDeleteEvent(event._id)}
           >
             Delete
           </Button>

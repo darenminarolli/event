@@ -14,28 +14,51 @@ import LoginPage from "./pages/Auth/LoginPage";
 import MainLayout from "./layouts/MainLayout";
 import RequireAuth from "./components/RequireAuth";
 import NotFound from "./pages/NotFoundPage";
+import { EventProvider } from "./contexts/EventContext";
+
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="/events" element={<EventsPage />} />
+          <Route
+            path="/events"
+            element={
+              <EventProvider>
+                <EventsPage />
+              </EventProvider>
+            }
+          />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-
+          
           <Route element={<RequireAuth allowedRoles={"user"} />}>
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route></Route>
+            <Route
+              path="/profile"
+              element={
+                <EventProvider>
+                  <ProfilePage />
+                </EventProvider>
+              }
+            />
           </Route>
           <Route element={<RequireAuth allowedRoles={"admin"} />}>
-            <Route path="/admin" element={<AdminPage />} />
+            <Route
+              path="/admin"
+              element={
+                <EventProvider>
+                  <AdminPage />
+                </EventProvider>
+              }
+            />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
       </>
     )
   );
+
   return <RouterProvider router={router} />;
 }
 
