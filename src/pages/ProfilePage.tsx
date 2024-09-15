@@ -7,9 +7,9 @@ import AdminPage from "./AdminPage";
 
 const ProfilePage = () => {
 
-  const { logout, user } = useAuth();
+  const { logout, user, isAuthenticated } = useAuth();
 
-  if(user?.role === "admin"){
+  if(isAuthenticated && user?.role === "admin"){
     return <AdminPage/>
   }
   return (
