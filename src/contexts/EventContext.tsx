@@ -39,7 +39,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       setIsLoading(false);
     }
   };
-  
+
   const fetchCreatedEvents = async () => {
     try {
       if (!user) return;
@@ -96,6 +96,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
 
 
   useEffect(() => {
+    fetchCreatedEvents()
     fetchEvents();
   }, []);
 

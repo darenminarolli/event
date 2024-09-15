@@ -1,15 +1,10 @@
-import { useEffect } from "react";
 import EventCard from "./EventCard";
 import { useAuth } from "../hooks/useAuth";
 import { useEventContext } from "../contexts/EventContext";
 
 const CreatedEvents = () => {
   const { user } = useAuth();
-  const { fetchCreatedEvents, isLoading, createdEvents } = useEventContext();
-
-  useEffect(() => {
-    fetchCreatedEvents();
-  }, []);
+  const { isLoading, createdEvents } = useEventContext();
 
   return (
     <div className="flex flex-col ">
