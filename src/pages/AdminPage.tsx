@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import CreatedEvents from "../components/CreatedEvents";
+// import CreatedEvents from "../components/CreatedEvents";
 import LogOut from "../components/icons/LogOut";
 import Button from "../components/ui/Button";
 import { useAuth } from "../hooks/useAuth";
