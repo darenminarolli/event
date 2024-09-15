@@ -132,7 +132,7 @@ const UserForm = ({ user, handleEdit }: PropsType) => {
       <h2 className="text-textDanger">{errors.confirmPassword?.message}</h2>
 
       <Button className="justify-center" disabled={isSubmitting} type="submit">
-        {user ? "Update" : "Register"}
+        {user ? "Update" : "Register"} User
       </Button>
     </form>
   );

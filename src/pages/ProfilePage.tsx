@@ -3,10 +3,15 @@ import Button from "../components/ui/Button";
 import { useAuth } from "../hooks/useAuth";
 import CreatedEvents from "../components/CreatedEvents";
 import ReservedEvents from "../components/ReservedEvents";
+import AdminPage from "./AdminPage";
 
 const ProfilePage = () => {
-  const { logout } = useAuth();
 
+  const { logout, user } = useAuth();
+
+  if(user?.role === "admin"){
+    return <AdminPage/>
+  }
   return (
     <div>
       <div className="w-full  flex flex-col text-center gap-y-6 mb-20">

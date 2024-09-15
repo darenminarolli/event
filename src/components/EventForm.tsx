@@ -97,7 +97,7 @@ const EventForm = ({ event }: { event?: Event }) => {
         onClick={() => {}}
         type="submit"
       >
-        Create Event
+       {event? 'Update': 'Create' } Event
       </Button>
     </form>
   );

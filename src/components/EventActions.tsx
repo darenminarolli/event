@@ -40,7 +40,7 @@ const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen }) => {
         userId: user?._id,
       });
       console.log("Reservation successful:", res);
-      navigate(0);
+      navigate('/events');
     } catch (error) {
       alert("Could not make a reservation");
       console.error("Error during reservation:", error);
@@ -51,7 +51,7 @@ const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen }) => {
     try {
       const event = await EventService.deleteEvent(eventId);
       console.log("Event deleted successfully:", event);
-      navigate(0);
+      navigate('/profile');
     } catch (error) {
       alert("Could not delete event");
       console.error("Error during delete:", error);

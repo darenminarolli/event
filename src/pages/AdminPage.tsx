@@ -16,7 +16,7 @@ const AdminPage = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEventModalOpen, setIsEventModalOpen] = useState<boolean>(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
     const getAllUsers = async () => {
@@ -35,7 +35,7 @@ const AdminPage = () => {
     try {
       await UserService.deleteUser(id);
       const updatedUsers = users.filter((user) => user._id !== id);
-      setUsers(updatedUsers); 
+      setUsers(updatedUsers);
     } catch (error) {
       console.error("Failed to delete user:", error);
     }
@@ -44,7 +44,7 @@ const AdminPage = () => {
   const handleEdit = async (updatedUser: User, id?: string) => {
     try {
       const result = await UserService.updateUser(updatedUser, id);
-      if(result){
+      if (result) {
         const updatedUsers = users.map((user) =>
           user._id === id ? result : user
         );
@@ -57,8 +57,8 @@ const AdminPage = () => {
   };
 
   const openEditModal = (user: User) => {
-    setSelectedUser(user);  // Set the selected user
-    setIsModalOpen(true);   // Open the modal
+    setSelectedUser(user);
+    setIsModalOpen(true);
   };
 
   return (
@@ -70,7 +70,12 @@ const AdminPage = () => {
           information you'd like to share.
         </p>
         <div className="w-full flex justify-between md:justify-end items-center gap-4 ">
-          <Button className="md:w-fit" onClick={()=> setIsEventModalOpen(true)}>+ Create User</Button>
+          <Button
+            className="md:w-fit"
+            onClick={() => setIsEventModalOpen(true)}
+          >
+            + Create User
+          </Button>
           <Button className="md:w-fit" onClick={logout}>
             <LogOut /> Log Out
           </Button>
@@ -86,8 +91,7 @@ const AdminPage = () => {
                   key={user._id}
                   user={user}
                   handleDelete={() => handleDelete(user?._id)}
-                  // openEditModal={handleEdit}
-                  openEditModal={openEditModal}  // Pass this function
+                  openEditModal={openEditModal} 
                 />
               ))
             ) : (
@@ -100,17 +104,18 @@ const AdminPage = () => {
           <CreatedEvents />
         </div>
       </div>
-      {/* Event Modal */}
-      <Modal onClose={() => setIsEventModalOpen(false)} isOpen={isEventModalOpen}>
+      <Modal
+        onClose={() => setIsEventModalOpen(false)}
+        isOpen={isEventModalOpen}
+      >
         <h1 className="header-text">#Event Creation</h1>
         <EventForm />
       </Modal>
 
-      {/* Edit User Modal */}
       <Modal onClose={() => setIsModalOpen(false)} isOpen={isModalOpen}>
         <h1 className="header-text">#Update User</h1>
         {selectedUser && (
-          <UserForm handleEdit={handleEdit} user={selectedUser} />  // Pass the selected user
+          <UserForm handleEdit={handleEdit} user={selectedUser} /> 
         )}
       </Modal>
     </div>

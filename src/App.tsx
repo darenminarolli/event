@@ -28,9 +28,9 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route></Route>
           </Route>
-          <Route element={<RequireAuth allowedRoles={"admin"} />}>
+          {/* <Route element={<RequireAuth allowedRoles={"admin"} />}>
             <Route path="/admin" element={<AdminPage />} />
-          </Route>
+          </Route> */}
           <Route path="*" element={<NotFound />} />
         </Route>
       </>
