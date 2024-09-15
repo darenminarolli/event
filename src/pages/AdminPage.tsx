@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import CreatedEvents from "../components/CreatedEvents";
+// import CreatedEvents from "../components/CreatedEvents";
 import LogOut from "../components/icons/LogOut";
 import Button from "../components/ui/Button";
 import { useAuth } from "../hooks/useAuth";
@@ -9,10 +9,12 @@ import UserCard from "../components/UserCard";
 import Modal from "../components/ui/Modal";
 import EventForm from "../components/EventForm";
 import UserForm from "../components/UserForm";
+import { useEventContext } from "../contexts/EventContext";
+import EventCard from "../components/EventCard";
 
 const AdminPage = () => {
   const { logout } = useAuth();
-
+  const { events } = useEventContext()
   const [users, setUsers] = useState<User[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEventModalOpen, setIsEventModalOpen] = useState<boolean>(false);
@@ -101,7 +103,22 @@ const AdminPage = () => {
         </div>
         <div>
           <h2 className="secondary-text">All Events</h2>
-          <CreatedEvents />
+          {/* <CreatedEvents /> */}
+          <div className="flex flex-col ">
+      <h2 className="self-center secondary-text">
+        {/* {user?.role === "admin" ? "" : "Events you have created"} */}
+      </h2>
+      <div className="w-full flex flex-col gap-y-10">
+        {events.map((event) => (
+          <EventCard
+            className="!bg-slate-300"
+            key={event._id}
+            event={event}
+            status="owner"
+          />
+        ))}
+      </div>
+    </div>
         </div>
       </div>
       <Modal
