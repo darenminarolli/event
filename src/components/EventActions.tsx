@@ -21,7 +21,7 @@ const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen }) => {
     const fetchAttendees = async () => {
       try {
         const res = await AttendeeService.getAttendees(event._id);
-        setAttendees(res); 
+        setAttendees(res);
       } catch (error) {
         console.error(error);
       }
@@ -40,7 +40,7 @@ const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen }) => {
         userId: user?._id,
       });
       console.log("Reservation successful:", res);
-      navigate('/events');
+      navigate("/events");
     } catch (error) {
       alert("Could not make a reservation");
       console.error("Error during reservation:", error);
@@ -51,7 +51,11 @@ const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen }) => {
     try {
       const event = await EventService.deleteEvent(eventId);
       console.log("Event deleted successfully:", event);
-      navigate('/profile');
+      if (user?.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/profile");
+      }
     } catch (error) {
       alert("Could not delete event");
       console.error("Error during delete:", error);
