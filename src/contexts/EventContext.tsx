@@ -1,14 +1,18 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { Event } from "../types/event";
 import { EventService } from "../services/EventService";
+import { useAuth } from "../hooks/useAuth";
 
 interface EventContextType {
   events: Event[];
-  isLoading: boolean;
+  createdEvents: Event[];
+  setCreatedEvents: React.Dispatch<React.SetStateAction<Event[]>>;
+   isLoading: boolean;
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   fetchEvents: () => Promise<void>;
   handleCreateEvent: (eventData: Event) => Promise<void>;
+  fetchCreatedEvents: () => Promise<void>;
   handleUpdateEvent: (eventData: Event, eventId: string) => Promise<void>;
   handleDeleteEvent: (eventId: string) => Promise<void>;
 }
@@ -18,7 +22,9 @@ const EventContext = createContext<EventContextType | undefined>(undefined);
 export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { user } = useAuth();
   const [events, setEvents] = useState<Event[]>([]);
+  const [createdEvents, setCreatedEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -29,6 +35,24 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       setEvents(response);
     } catch (error) {
       console.error("Failed to fetch events:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const fetchCreatedEvents = async () => {
+    try {
+      if (!user) return;
+      if (user.role === "admin") {
+        const allEvents = await EventService.getAllEvents();
+        setCreatedEvents(allEvents);
+        return;
+      }
+      const res = await EventService.getEvents(user?._id);
+      setCreatedEvents(res);
+    } catch (error) {
+      console.error("Failed to fetch created events:", error);
+      return;
     } finally {
       setIsLoading(false);
     }
@@ -61,19 +85,23 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const event = await EventService.deleteEvent(eventId);
       console.log("Event deleted successfully:", event);
-      await fetchEvents();
+      await fetchCreatedEvents();
     } catch (error) {
       alert("Could not delete event");
       console.error("Error during delete:", error);
     }
   };
+
+
+
+
   useEffect(() => {
     fetchEvents();
   }, []);
 
   return (
     <EventContext.Provider
-      value={{ events, isLoading,isModalOpen,setIsModalOpen, fetchEvents, handleCreateEvent, handleUpdateEvent, handleDeleteEvent }}
+      value={{ events,createdEvents,setCreatedEvents, isLoading,isModalOpen,setIsModalOpen, fetchEvents, fetchCreatedEvents, handleCreateEvent, handleUpdateEvent, handleDeleteEvent }}
     >
       {children}
     </EventContext.Provider>

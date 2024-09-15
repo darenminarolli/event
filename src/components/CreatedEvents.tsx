@@ -1,34 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import EventCard from "./EventCard";
 import { useAuth } from "../hooks/useAuth";
-import { EventService } from "../services/EventService";
-import { Event } from "../types/event";
+import { useEventContext } from "../contexts/EventContext";
 
 const CreatedEvents = () => {
   const { user } = useAuth();
-
-  const [createdEvents, setCreatedEvents] = useState<Event[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { fetchCreatedEvents, isLoading, createdEvents } = useEventContext();
 
   useEffect(() => {
-    const fetchCreatedEvents = async () => {
-      try {
-        if (!user) return;
-        if (user.role === "admin") {
-          const allEvents = await EventService.getAllEvents();
-          setCreatedEvents(allEvents);
-          return;
-        }
-        const res = await EventService.getEvents(user?._id);
-        setCreatedEvents(res);
-      } catch (error) {
-        console.error("Failed to fetch created events:", error);
-        return;
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchCreatedEvents();
   }, []);
 
