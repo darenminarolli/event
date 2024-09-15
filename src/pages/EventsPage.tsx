@@ -8,9 +8,8 @@ import { useEventContext } from "../contexts/EventContext";
 
 const EventsPage = () => {
   const { isAuthenticated } = useAuth();
-  const { events, isLoading } = useEventContext();
+  const { events, isLoading, isModalOpen, setIsModalOpen } = useEventContext();
 
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
 
 

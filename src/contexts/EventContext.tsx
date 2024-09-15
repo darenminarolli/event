@@ -5,6 +5,8 @@ import { EventService } from "../services/EventService";
 interface EventContextType {
   events: Event[];
   isLoading: boolean;
+  isModalOpen: boolean;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
   fetchEvents: () => Promise<void>;
   handleCreateEvent: (eventData: Event) => Promise<void>;
   handleUpdateEvent: (eventData: Event, eventId: string) => Promise<void>;
@@ -18,6 +20,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const fetchEvents = async () => {
     setIsLoading(true);
@@ -37,6 +40,8 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       await fetchEvents();
     } catch (error) {
       console.error("Failed to create event:", error);
+    }finally{
+      setIsModalOpen(false);
     }
   };
   const handleUpdateEvent = async (eventData: Event, eventId: string) => {
@@ -47,6 +52,8 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       await fetchEvents();
     } catch (error) {
       console.error("Failed to create/update event:", error);
+    }finally{
+      setIsModalOpen(false);
     }
   };
 
@@ -66,7 +73,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <EventContext.Provider
-      value={{ events, isLoading, fetchEvents, handleCreateEvent, handleUpdateEvent, handleDeleteEvent }}
+      value={{ events, isLoading,isModalOpen,setIsModalOpen, fetchEvents, handleCreateEvent, handleUpdateEvent, handleDeleteEvent }}
     >
       {children}
     </EventContext.Provider>

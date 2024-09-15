@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useEventContext } from "../contexts/EventContext";
 import { Event } from "../types/event";
 import EventActions from "./EventActions";
 import Modal from "./ui/Modal";
@@ -10,8 +11,7 @@ interface PropsType {
   onStatusChange?: (eventId: string, newStatus: "reserve" | "reserved" | "owner") => void
 }
 const EventCard: React.FC<PropsType> = ({ className, status, event, onStatusChange }) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
+  const { isModalOpen, setIsModalOpen} = useEventContext()
   if (!event) {
     return null;
   }
