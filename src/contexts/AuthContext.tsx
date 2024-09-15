@@ -54,6 +54,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const checkAuthStatus = async () => {
     try {
+      if (!isAuthenticated) return; 
       const response = await api.get("/auth/me");
       setUser(response.data.user);
       setIsAuthenticated(true);
