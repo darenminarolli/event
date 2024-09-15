@@ -10,6 +10,7 @@ import Modal from "../components/ui/Modal";
 import EventForm from "../components/EventForm";
 import UserForm from "../components/UserForm";
 import { useEventContext } from "../contexts/EventContext";
+import EventCard from "../components/EventCard";
 
 const AdminPage = () => {
   const { logout } = useAuth();
@@ -106,10 +107,12 @@ const AdminPage = () => {
           {
             events && events.length > 0? (
               events.map((event) => (
-                <div key={event._id} className="w-full">
-                  <h3>{event.name}</h3>
-                  <p>{event.desc}</p>
-                </div>
+                <EventCard
+                className="!bg-slate-300"
+                key={event._id}
+                event={event}
+                status="owner"
+              />
               ))
             ) : (
               <p>No events found.</p>
