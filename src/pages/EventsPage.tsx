@@ -10,8 +10,6 @@ const EventsPage = () => {
   const { events, isLoading, isModalOpen, setIsModalOpen } = useEventContext();
 
 
-
-
   const handleEventCreation = () => {
     if (!isAuthenticated) {
       alert("You must be logged in to reserve an event");
