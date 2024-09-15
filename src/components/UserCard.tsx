@@ -8,7 +8,7 @@ interface PropsType {
 }
 
 const UserCard: React.FC<PropsType> = ({ user, handleDelete, openEditModal }) => {
-  if (user)
+  if (user && user.firstName)
   return (
     <div className="w-full flex justify-between items-center p-6 gap-y-4 border-effect bg-slate-200 text-darkText">
       <div className="w-full"> 
