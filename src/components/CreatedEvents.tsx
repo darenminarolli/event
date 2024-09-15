@@ -6,6 +6,8 @@ const CreatedEvents = () => {
   const { user } = useAuth();
   const { isLoading, createdEvents } = useEventContext();
 
+  console.log('user: ', user)
+  console.log('createdEvents: ', createdEvents)
   return (
     <div className="flex flex-col ">
       <h2 className="self-center secondary-text">
