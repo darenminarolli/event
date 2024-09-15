@@ -2,20 +2,27 @@ import React, { useEffect, useState } from "react";
 import Button from "./ui/Button";
 import { Event } from "../types/event";
 import { useAuth } from "../hooks/useAuth";
+import { useEventContext } from "../contexts/EventContext";
 import { AttendeeService } from "../services/AttendeService";
-import { EventService } from "../services/EventService";
-// import { useNavigate } from "react-router-dom";
 
 interface Props {
   status?: "reserve" | "reserved" | "owner";
   event: Event;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  onStatusChange?: ((eventId: string, newStatus: "reserve" | "reserved" | "owner") => void) 
+  onStatusChange?: (
+    eventId: string,
+    newStatus: "reserve" | "reserved" | "owner"
+  ) => void;
 }
 
-const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen, onStatusChange }) => {
+const EventActions: React.FC<Props> = ({
+  status,
+  event,
+  setIsModalOpen,
+  onStatusChange,
+}) => {
   const { user, isAuthenticated } = useAuth();
-  // const navigate = useNavigate();
+  const { handleDeleteEvent } = useEventContext();
   const [attendees, setAttendees] = useState<any[]>([]);
 
   useEffect(() => {
@@ -40,24 +47,13 @@ const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen, onStatus
         eventId: event._id,
         userId: user?._id,
       });
-      if( onStatusChange && event._id){
+      if (onStatusChange && event._id) {
         onStatusChange(event._id, "reserved");
       }
       console.log("Reservation successful:", res);
     } catch (error) {
       alert("Could not make a reservation");
       console.error("Error during reservation:", error);
-    }
-  };
-
-  const handleDeleteEvent = async (eventId?: string) => {
-    try {
-      const event = await EventService.deleteEvent(eventId);
-      console.log("Event deleted successfully:", event);
-      window.location.reload()
-    } catch (error) {
-      alert("Could not delete event");
-      console.error("Error during delete:", error);
     }
   };
 
@@ -78,7 +74,9 @@ const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen, onStatus
           </Button>
           <Button
             className="bg-red-600"
-            onClick={() => handleDeleteEvent(event._id)}
+            onClick={() => {
+              if (event._id) handleDeleteEvent(event._id);
+            }}
           >
             Delete
           </Button>
