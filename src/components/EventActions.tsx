@@ -4,7 +4,7 @@ import { Event } from "../types/event";
 import { useAuth } from "../hooks/useAuth";
 import { AttendeeService } from "../services/AttendeService";
 import { EventService } from "../services/EventService";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 interface Props {
   status?: "reserve" | "reserved" | "owner";
@@ -15,7 +15,7 @@ interface Props {
 
 const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen, onStatusChange }) => {
   const { user, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [attendees, setAttendees] = useState<any[]>([]);
 
   useEffect(() => {
@@ -54,11 +54,7 @@ const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen, onStatus
     try {
       const event = await EventService.deleteEvent(eventId);
       console.log("Event deleted successfully:", event);
-      if (user?.role === "admin") {
-        navigate("/admin");
-      } else {
-        navigate("/profile");
-      }
+      window.location.reload()
     } catch (error) {
       alert("Could not delete event");
       console.error("Error during delete:", error);

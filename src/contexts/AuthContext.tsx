@@ -24,7 +24,6 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
- 
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -44,9 +43,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = async () => {
     try {
       await AuthService.logoutUser();
+      localStorage.setItem("logout", "true");
       setUser(null);
       setIsAuthenticated(false);
-      window.location.pathname = '/'
+      window.location.pathname = "/";
     } catch (error) {
       console.error("Logout failed", error);
     }
@@ -54,7 +54,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const checkAuthStatus = async () => {
     try {
-      if (!isAuthenticated) return; 
+      const isLoggedOut = localStorage.getItem("logout");
+      if (isLoggedOut === "true") {
+        localStorage.removeItem("logout");
+        return;
+      }
       const response = await api.get("/auth/me");
       setUser(response.data.user);
       setIsAuthenticated(true);
