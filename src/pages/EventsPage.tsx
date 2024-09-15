@@ -13,12 +13,29 @@ const EventsPage = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [eventStatuses, setEventStatuses] = useState<{
+    [key: string]: "reserve" | "reserved" | "owner";
+  }>({});
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await EventService.getAllEvents();
         setEvents(response);
+
+        const statuses = response.reduce(
+          (
+            acc: { [key: string]: "reserve" | "reserved" | "owner" },
+            event: Event
+          ) => {
+            if (event._id) {
+              acc[event._id] = "reserve";
+            }
+            return acc;
+          },
+          {}
+        );
+        setEventStatuses(statuses);
       } catch (error) {
         console.error("Failed to fetch events:", error);
       } finally {
@@ -29,13 +46,16 @@ const EventsPage = () => {
     fetchEvents();
   }, []);
 
-  const handleStatusUpdate = (eventId: string, newStatus: "reserve" | "reserved" | "owner") => {
-    setEvents((prevEvents) =>
-      prevEvents.map((event) =>
-        event._id === eventId ? { ...event, status: newStatus } : event
-      )
-    );
+  const handleStatusChange = (
+    eventId: string,
+    newStatus: "reserve" | "reserved" | "owner"
+  ) => {
+    setEventStatuses((prevStatuses) => ({
+      ...prevStatuses,
+      [eventId]: newStatus,
+    }));
   };
+
   const handleEventCreation = () => {
     if (!isAuthenticated) {
       alert("You must be logged in to reserve an event");
@@ -44,6 +64,7 @@ const EventsPage = () => {
 
     setIsModalOpen(true);
   };
+
   return (
     <>
       <hgroup className="w-full flex flex-col mb-10">
@@ -61,9 +82,18 @@ const EventsPage = () => {
         <p className="text-center">Loading events...</p>
       ) : events.length > 0 ? (
         <div className="w-full flex flex-col gap-y-10">
-          {events.map((event) => (
-            <EventCard key={event._id} onStatusChange={handleStatusUpdate} status={ "reserve"} event={event} />
-          ))}
+          {events.map((event) => {
+            if (!event._id) return null;
+
+            return (
+              <EventCard
+                key={event._id}
+                status={eventStatuses[event._id] || "reserve"}
+                event={event}
+                onStatusChange={handleStatusChange}
+              />
+            );
+          })}
         </div>
       ) : (
         <p className="text-center">No events found.</p>
