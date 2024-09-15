@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import CreatedEvents from "../components/CreatedEvents";
+import CreatedEvents from "../components/CreatedEvents";
 import LogOut from "../components/icons/LogOut";
 import Button from "../components/ui/Button";
 import { useAuth } from "../hooks/useAuth";
@@ -101,7 +101,7 @@ const AdminPage = () => {
         </div>
         <div>
           <h2 className="secondary-text">All Events</h2>
-          {/* <CreatedEvents /> */}
+          <CreatedEvents />
         </div>
       </div>
       <Modal

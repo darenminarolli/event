@@ -47,9 +47,9 @@ function App() {
             <Route
               path="/admin"
               element={
-                <EventProvider>
+                // <EventProvider>
                   <AdminPage />
-                </EventProvider>
+                // </EventProvider>
               }
             />
           </Route>
