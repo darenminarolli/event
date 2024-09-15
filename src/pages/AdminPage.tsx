@@ -101,7 +101,7 @@ const AdminPage = () => {
         </div>
         <div>
           <h2 className="secondary-text">All Events</h2>
-          <CreatedEvents />
+          {/* <CreatedEvents /> */}
         </div>
       </div>
       <Modal
