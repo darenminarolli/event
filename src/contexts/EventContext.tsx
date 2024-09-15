@@ -41,18 +41,19 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const fetchCreatedEvents = async () => {
+    if (!user) return; // Ensure user is available
+    setIsLoading(true); // Set loading state specific to created events
+
     try {
-      if (!user) return;
       if (user.role === "admin") {
         const allEvents = await EventService.getAllEvents();
         setCreatedEvents(allEvents);
-        return;
+      } else {
+        const res = await EventService.getEvents(user._id);
+        setCreatedEvents(res);
       }
-      const res = await EventService.getEvents(user?._id);
-      setCreatedEvents(res);
     } catch (error) {
       console.error("Failed to fetch created events:", error);
-      return;
     } finally {
       setIsLoading(false);
     }
@@ -64,10 +65,11 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       await fetchEvents();
     } catch (error) {
       console.error("Failed to create event:", error);
-    }finally{
+    } finally {
       setIsModalOpen(false);
     }
   };
+
   const handleUpdateEvent = async (eventData: Event, eventId: string) => {
     try {
       if (eventId) {
@@ -76,15 +78,14 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       await fetchEvents();
     } catch (error) {
       console.error("Failed to create/update event:", error);
-    }finally{
+    } finally {
       setIsModalOpen(false);
     }
   };
 
   const handleDeleteEvent = async (eventId: string) => {
     try {
-      const event = await EventService.deleteEvent(eventId);
-      console.log("Event deleted successfully:", event);
+      await EventService.deleteEvent(eventId);
       await fetchCreatedEvents();
     } catch (error) {
       alert("Could not delete event");
@@ -92,17 +93,28 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-
-
-
   useEffect(() => {
-    fetchCreatedEvents()
+    if (user) {
+      fetchCreatedEvents(); 
+    }
     fetchEvents();
-  }, []);
+  }, [user]); 
 
   return (
     <EventContext.Provider
-      value={{ events,createdEvents,setCreatedEvents, isLoading,isModalOpen,setIsModalOpen, fetchEvents, fetchCreatedEvents, handleCreateEvent, handleUpdateEvent, handleDeleteEvent }}
+      value={{
+        events,
+        createdEvents,
+        setCreatedEvents,
+        isLoading,
+        isModalOpen,
+        setIsModalOpen,
+        fetchEvents,
+        fetchCreatedEvents,
+        handleCreateEvent,
+        handleUpdateEvent,
+        handleDeleteEvent,
+      }}
     >
       {children}
     </EventContext.Provider>
