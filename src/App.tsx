@@ -15,8 +15,7 @@ import MainLayout from "./layouts/MainLayout";
 import RequireAuth from "./components/RequireAuth";
 import NotFound from "./pages/NotFoundPage";
 import { EventProvider } from "./contexts/EventContext";
-import CreatedEvents from "./components/CreatedEvents";
-
+``
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -49,9 +48,7 @@ function App() {
               path="/admin"
               element={
                 <EventProvider>
-                  <AdminPage>
-                    <CreatedEvents/>
-                  </AdminPage>
+                  <AdminPage/>
                </EventProvider>
               }
             />

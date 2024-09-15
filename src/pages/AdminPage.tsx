@@ -1,5 +1,5 @@
-import { ReactNode, useEffect, useState } from "react";
-// import CreatedEvents from "../components/CreatedEvents";
+import { useEffect, useState } from "react";
+import CreatedEvents from "../components/CreatedEvents";
 import LogOut from "../components/icons/LogOut";
 import Button from "../components/ui/Button";
 import { useAuth } from "../hooks/useAuth";
@@ -10,7 +10,7 @@ import Modal from "../components/ui/Modal";
 import EventForm from "../components/EventForm";
 import UserForm from "../components/UserForm";
 
-const AdminPage = ({children}:{children:ReactNode}) => {
+const AdminPage = () => {
   const { logout } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -100,8 +100,7 @@ const AdminPage = ({children}:{children:ReactNode}) => {
         </div>
         <div>
           <h2 className="secondary-text">All Events</h2>
-          {/* <CreatedEvents /> */}
-          {children}
+          <CreatedEvents />
         </div>
       </div>
       <Modal
