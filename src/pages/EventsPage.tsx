@@ -28,6 +28,14 @@ const EventsPage = () => {
 
     fetchEvents();
   }, []);
+
+  const handleStatusUpdate = (eventId: string, newStatus: "reserve" | "reserved" | "owner") => {
+    setEvents((prevEvents) =>
+      prevEvents.map((event) =>
+        event._id === eventId ? { ...event, status: newStatus } : event
+      )
+    );
+  };
   const handleEventCreation = () => {
     if (!isAuthenticated) {
       alert("You must be logged in to reserve an event");
@@ -54,7 +62,7 @@ const EventsPage = () => {
       ) : events.length > 0 ? (
         <div className="w-full flex flex-col gap-y-10">
           {events.map((event) => (
-            <EventCard key={event._id} status="reserve" event={event} />
+            <EventCard key={event._id} onStatusChange={handleStatusUpdate} status={ "reserve"} event={event} />
           ))}
         </div>
       ) : (

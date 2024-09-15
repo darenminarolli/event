@@ -10,9 +10,10 @@ interface Props {
   status?: "reserve" | "reserved" | "owner";
   event: Event;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onStatusChange?: ((eventId: string, newStatus: "reserve" | "reserved" | "owner") => void) 
 }
 
-const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen }) => {
+const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen, onStatusChange }) => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [attendees, setAttendees] = useState<any[]>([]);
@@ -39,8 +40,10 @@ const EventActions: React.FC<Props> = ({ status, event, setIsModalOpen }) => {
         eventId: event._id,
         userId: user?._id,
       });
+      if( onStatusChange && event._id){
+        onStatusChange(event._id, "reserved");
+      }
       console.log("Reservation successful:", res);
-      navigate("/events");
     } catch (error) {
       alert("Could not make a reservation");
       console.error("Error during reservation:", error);
