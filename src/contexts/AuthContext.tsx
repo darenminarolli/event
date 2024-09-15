@@ -1,5 +1,4 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { User } from "../types/user";
 import api from "../services/api";
 import { AuthService } from "../services/AuthService";
@@ -25,8 +24,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const navigate = useNavigate();
-
+ 
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -48,7 +46,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       await AuthService.logoutUser();
       setUser(null);
       setIsAuthenticated(false);
-      navigate('/');
+      window.location.href = '/login'
     } catch (error) {
       console.error("Logout failed", error);
     }
