@@ -7,7 +7,7 @@ import {
 import "./App.css";
 import HomePage from "./pages/HomePage";
 import EventsPage from "./pages/EventsPage";
-// import AdminPage from "./pages/AdminPage";
+import AdminPage from "./pages/AdminPage";
 import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import LoginPage from "./pages/Auth/LoginPage";
@@ -28,9 +28,9 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route></Route>
           </Route>
-          {/* <Route element={<RequireAuth allowedRoles={"admin"} />}>
+          <Route element={<RequireAuth allowedRoles={"admin"} />}>
             <Route path="/admin" element={<AdminPage />} />
-          </Route> */}
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
       </>
