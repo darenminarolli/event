@@ -50,3 +50,4 @@ export default tseslint.config({
 ```
 # event_manager
 # event_api
+# event
