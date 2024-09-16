@@ -50,7 +50,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`w-full transition-opacity duration-300 ${
+      className={`w-full  fixed  z-50 max-w-[1250px] transition-opacity duration-300 ${
         isVisible ? "opacity-100" : "opacity-0"
       }  border-effect z-50`}
     >
