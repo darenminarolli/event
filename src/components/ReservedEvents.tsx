@@ -27,7 +27,7 @@ const ReservedEvents = () => {
 
   return (
     <div className="flex flex-col">
-      <h2 className="self-center secondary-text">Events you have reserved</h2>
+      <h2 className="self-center secondary-text mb-4">Events you have reserved</h2>
       {isLoading ? (
         <p className="text-center">Loading events...</p>
       ) : events.length > 0 ? (

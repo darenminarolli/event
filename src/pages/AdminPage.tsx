@@ -9,11 +9,9 @@ import UserCard from "../components/UserCard";
 import Modal from "../components/ui/Modal";
 import EventForm from "../components/EventForm";
 import UserForm from "../components/UserForm";
-import { useEventContext } from "../contexts/EventContext";
 
 const AdminPage = () => {
   const { logout } = useAuth();
-  const { events } = useEventContext() 
   const [users, setUsers] = useState<User[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEventModalOpen, setIsEventModalOpen] = useState<boolean>(false);
@@ -103,7 +101,6 @@ const AdminPage = () => {
         <div>
           <h2 className="secondary-text">All Events</h2>
           <CreatedEvents />
-          
         </div>
       </div>
       <Modal

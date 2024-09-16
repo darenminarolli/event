@@ -8,23 +8,20 @@ import { AttendeeService } from "../services/AttendeService";
 interface Props {
   status?: "reserve" | "reserved" | "owner";
   event: Event;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onEdit: () => void;
   onStatusChange?: (
     eventId: string,
     newStatus: "reserve" | "reserved" | "owner"
   ) => void;
 }
 
-const EventActions: React.FC<Props> = ({
-  status,
-  event,
-  setIsModalOpen,
-}) => {
+const EventActions: React.FC<Props> = ({ status, event, onEdit }) => {
   const { user, isAuthenticated } = useAuth();
   const { handleDeleteEvent } = useEventContext();
   const [attendees, setAttendees] = useState<any[]>([]);
 
   useEffect(() => {
+
     const fetchAttendees = async () => {
       try {
         const res = await AttendeeService.getAttendees(event._id);
@@ -35,7 +32,7 @@ const EventActions: React.FC<Props> = ({
     };
     fetchAttendees();
   }, []);
-console.log(`Attendees ${attendees}`)
+
   const handleReservation = async () => {
     if (!isAuthenticated) {
       alert("You must be logged in to reserve an event");
@@ -47,6 +44,7 @@ console.log(`Attendees ${attendees}`)
         userId: user?._id,
       });
       console.log("Reservation successful:", res);
+      alert("Reservation successful");
     } catch (error) {
       alert("Could not make a reservation");
       console.error("Error during reservation:", error);
@@ -65,7 +63,7 @@ console.log(`Attendees ${attendees}`)
     return (
       <div className="flex justify-between items-center gap-10">
         <div className="w-full flex flex-col md:flex-row gap-6">
-          <Button className="bg-blue-600" onClick={() => setIsModalOpen(true)}>
+          <Button className="bg-blue-600" onClick={onEdit}>
             Edit
           </Button>
           <Button

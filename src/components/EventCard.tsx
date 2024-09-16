@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEventContext } from "../contexts/EventContext";
 import { Event } from "../types/event";
 import EventActions from "./EventActions";
@@ -11,9 +11,14 @@ interface PropsType {
 }
 const EventCard: React.FC<PropsType> = ({ className, status, event }) => {
   const { isModalOpen, setIsModalOpen} = useEventContext()
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null); 
   if (!event) {
     return null;
   }
+  const handleEditClick = () => {
+    setSelectedEvent(event);  
+    setIsModalOpen(true);     
+  };
   return (
     <>
       <div
@@ -34,16 +39,19 @@ const EventCard: React.FC<PropsType> = ({ className, status, event }) => {
           <p className="text-xl leading-2 tracking-wider">{event.desc}</p>
           <EventActions
             status={status}
-            setIsModalOpen={setIsModalOpen}
+            onEdit={handleEditClick}
             event={event}
             />
           <p className="self-end">Location: {event?.location}</p>
         </div>
       </div>
+      {
+        selectedEvent && 
       <Modal onClose={() => setIsModalOpen(false)} isOpen={isModalOpen}>
         <h1 className="header-text">#Update Event</h1>
-        <EventForm event={event} />
+        <EventForm event={selectedEvent} />
       </Modal>
+      }
     </>
   );
 };

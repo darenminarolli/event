@@ -41,8 +41,8 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const fetchCreatedEvents = async () => {
-    if (!user) return; // Ensure user is available
-    setIsLoading(true); // Set loading state specific to created events
+    if (!user) return; 
+    setIsLoading(true); 
 
     try {
       if (user.role === "admin") {

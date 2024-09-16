@@ -19,7 +19,7 @@ const CreatedEvents = () => {
 
   return (
     <div className="flex flex-col ">
-      <h2 className="self-center secondary-text">
+      <h2 className="self-center secondary-text mb-4">
         {user?.role === "admin" ? "" : "Events you have created"}
       </h2>
       <div className="w-full flex flex-col gap-y-10">
