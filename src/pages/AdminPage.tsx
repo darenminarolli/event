@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import CreatedEvents from "../components/CreatedEvents";
+import CreatedEvents from "../components/CreatedEvents";
 import LogOut from "../components/icons/LogOut";
 import Button from "../components/ui/Button";
 import { useAuth } from "../hooks/useAuth";
@@ -10,7 +10,6 @@ import Modal from "../components/ui/Modal";
 import EventForm from "../components/EventForm";
 import UserForm from "../components/UserForm";
 import { useEventContext } from "../contexts/EventContext";
-import EventCard from "../components/EventCard";
 
 const AdminPage = () => {
   const { logout } = useAuth();
@@ -103,20 +102,8 @@ const AdminPage = () => {
         </div>
         <div>
           <h2 className="secondary-text">All Events</h2>
-          {/* <CreatedEvents /> */}
-          {
-            events && events.length > 0? (
-              events.map((event) => (
-                <EventCard
-                className="!bg-slate-300"
-                key={event._id}
-                event={event}
-                status="owner"
-              />
-              ))
-            ) : (
-              <p>No events found.</p>
-            )}
+          <CreatedEvents />
+          
         </div>
       </div>
       <Modal

@@ -42,7 +42,7 @@ const EventsPage = () => {
             return (
               <EventCard
                 key={event._id}
-                status={"reserve"}
+                status="reserve"
                 event={event}
               />
             );

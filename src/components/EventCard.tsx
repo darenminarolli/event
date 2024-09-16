@@ -8,9 +8,8 @@ interface PropsType {
   className?: string;
   status?: "reserve" | "reserved" | "owner";
   event?: Event;
-  onStatusChange?: (eventId: string, newStatus: "reserve" | "reserved" | "owner") => void
 }
-const EventCard: React.FC<PropsType> = ({ className, status, event, onStatusChange }) => {
+const EventCard: React.FC<PropsType> = ({ className, status, event }) => {
   const { isModalOpen, setIsModalOpen} = useEventContext()
   if (!event) {
     return null;
@@ -37,8 +36,7 @@ const EventCard: React.FC<PropsType> = ({ className, status, event, onStatusChan
             status={status}
             setIsModalOpen={setIsModalOpen}
             event={event}
-            onStatusChange={onStatusChange}    
-                  />
+            />
           <p className="self-end">Location: {event?.location}</p>
         </div>
       </div>

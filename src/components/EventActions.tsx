@@ -19,7 +19,6 @@ const EventActions: React.FC<Props> = ({
   status,
   event,
   setIsModalOpen,
-  onStatusChange,
 }) => {
   const { user, isAuthenticated } = useAuth();
   const { handleDeleteEvent } = useEventContext();
@@ -36,7 +35,7 @@ const EventActions: React.FC<Props> = ({
     };
     fetchAttendees();
   }, []);
-
+console.log(`Attendees ${attendees}`)
   const handleReservation = async () => {
     if (!isAuthenticated) {
       alert("You must be logged in to reserve an event");
@@ -47,9 +46,6 @@ const EventActions: React.FC<Props> = ({
         eventId: event._id,
         userId: user?._id,
       });
-      if (onStatusChange && event._id) {
-        onStatusChange(event._id, "reserved");
-      }
       console.log("Reservation successful:", res);
     } catch (error) {
       alert("Could not make a reservation");
