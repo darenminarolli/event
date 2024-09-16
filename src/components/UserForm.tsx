@@ -89,7 +89,7 @@ const UserForm = ({ user, handleEdit }: PropsType) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="md:w-[600px] m-auto flex flex-col gap-y-4 my-4"
+      className="md:w-[600px] w-full m-auto flex flex-col gap-y-4 my-4"
     >
       <label htmlFor="firstName">First Name:</label>
       <Input
