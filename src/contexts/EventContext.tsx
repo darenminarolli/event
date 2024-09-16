@@ -73,9 +73,13 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   const handleUpdateEvent = async (eventData: Event, eventId: string) => {
     try {
       if (eventId) {
-        await EventService.updateEvent(eventData, eventId);
+        const result = await EventService.updateEvent(eventData, eventId);
+        const updatedEvents = createdEvents.map((event) =>
+          event._id === eventId ? result : event
+        );
+        setCreatedEvents(updatedEvents);
       }
-      await fetchEvents();
+
     } catch (error) {
       console.error("Failed to create/update event:", error);
     } finally {
@@ -86,7 +90,8 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   const handleDeleteEvent = async (eventId: string) => {
     try {
       await EventService.deleteEvent(eventId);
-      await fetchCreatedEvents();
+      const updatedEvents = createdEvents.filter((event) => event._id !== eventId);
+       setCreatedEvents(updatedEvents);
     } catch (error) {
       alert("Could not delete event");
       console.error("Error during delete:", error);
